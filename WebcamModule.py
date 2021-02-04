@@ -1,6 +1,6 @@
 import cv2
 
-cap - cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 
 def getImg(dispay= False, size = [480,240]):
     _, img = cap.read()

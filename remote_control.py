@@ -2,6 +2,10 @@ import RPi.GPIO as gpio
 import time
 import sys
 import Tkinter as tk
+import tkFont
+
+
+window.mainloop()
 
 def init():
     gpio.setmode(gpio.BOARD)
@@ -59,6 +63,10 @@ def pivot_right(tf):
     time.sleep(tf)
     gpio.cleanup()
 
+def forward(event):
+    init()
+    forward1 = event.char
+    sleep_time = 0.030
 
 def key_input(event):
     init()
@@ -82,6 +90,35 @@ def key_input(event):
         gpio.cleanup()
 
 
+
+
 command = tk.Tk()
+command.title("Cheq_The_Rover")
+command.geometry("400x400")
+  
+
+
+turn_left = Button(command, text = "Q", command = key_input, height = 2, width =8 )
+turn_left.place(x=50, y=50) #button position turn right
+
+forward.place(x=130, y=50) #button position go forward
+
+turn_right = Button(command, text = "E", command = turn_right, height = 2, width =8 )
+turn_right.place(x=190, y=50) #button position turn left
+
+pivot_left= Button(command, text = "A", command = pivot_left, height =2 , width = 6)  
+pivot_left.place(x = 60, y =150 ) #button position reverse Left
+
+reverse= Button(command, text = "D", command = reverse, height =2 , width = 6)  
+reverse.place(x = 123, y =150 ) #button position reverse
+
+pivot_right= Button(command, text = "D", command = pivot_right, height =2 , width = 6)  
+pivot_right.place(x = 183, y = 150) #button position reverse right
+
+
 command.bind('<KeyPress>', key_input)
-command.mainloop()
+
+Label(window,text='w',fg='blue',font=('Arial',20)).pack(pady=20)
+emptylabel
+
+mainloop()
