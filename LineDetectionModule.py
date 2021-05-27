@@ -3,28 +3,34 @@ import numpy as np
 import utlis
 #import time
 
+#curve value is stored in an area and its declared global since it will be required in couple of functions.
 curveList = []
 avgVal=10
 
+#defining img and the display value
 def getLaneCurve(img,display=1):
     
+
     imgCopy = img.copy()
     imgResult = img.copy()
     #### STEP 1
     imgThres = utlis.thresholding(img)
 
     ### STEP 2
+    #to get the wheel points.
     hT, wT, c = img.shape
     points = utlis.valTrackbars()
     imgWarp = utlis.warpImg(imgThres,points,wT,hT)
     imgWarpPoints = utlis.drawPoints(imgCopy,points)
 
     ### STEP 3
+    #For histogram and the middle point for the path.
     middlePoint,imgHist = utlis.getHistogram(imgWarp,display=True,minPer=0.5,region=4)
     curveAveragePoint,imgHist = utlis.getHistogram(imgWarp,display=True,minPer=0.9)
     curveRaw = curveAveragePoint - middlePoint
 
     ### STEP 4
+    #to get the exact value of the curve.
     curveList.append(curveRaw)
     if len(curveList)>avgVal:
         curveList.pop(0)
@@ -32,6 +38,7 @@ def getLaneCurve(img,display=1):
 
 
     ### STEP 5
+    #For warping points , and the range on which the algorthm need to calculate for the next curve.
     if display != 0:
         imgInvWarp = utlis.warpImg(imgWarp, points, wT, hT, inv=True)
         imgInvWarp = cv2.cvtColor(imgInvWarp, cv2.COLOR_GRAY2BGR)
@@ -61,6 +68,7 @@ def getLaneCurve(img,display=1):
         cv2.imshow('Result',imgResult)
     
     ### normalization
+    #giving conditions for when its rigght curve or left curve.
     curve = curve/100
     if curve> 1: curve == 1
     if curve<-1: curve == -1
@@ -72,6 +80,7 @@ def getLaneCurve(img,display=1):
     return curve
 
 if __name__ == '__main__':
+    #traning model , picking the exact values for thresholding on the trackbar.
     cap = cv2.VideoCapture('vid1.mp4')
     intialTrackBarVals = [101,99, 34,230 ]
     utlis.initializeTrackbars(intialTrackBarVals)

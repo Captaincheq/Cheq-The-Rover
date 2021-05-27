@@ -12,6 +12,7 @@ cap.set(4, frameHeight)
 def empty(a):
     pass
 
+#For training the model , this trackbar make it easy for thresholding and for warp
 cv2.namedWindow("HSV")
 cv2.resizeWindow("HSV", 640,240)
 cv2.createTrackbar("HUE Min", "HSV", 0,179, empty)
@@ -21,10 +22,12 @@ cv2.createTrackbar("SAT Min", "HSV", 255,255, empty)
 cv2.createTrackbar("VALUE Min", "HSV", 0,255, empty)
 cv2.createTrackbar("VALUE Max", "HSV", 255,255, empty)
 
+#Video Used for training the the algorithm
 cap = cv2.VideoCapture('vid1.mp4')
 frameCounter = 0
 
 while True:
+    #Loop for frameCounting since images are combined to make a video.
     frameCounter +=1
     if cap.get(cv2.CAP_PROP_FRAME_COUNT) == frameCounter:
         cap.set(cv2.CAP_PROP_POS_FRAMES,0)
@@ -46,6 +49,7 @@ while True:
     mask = cv2.inRange(imgHsv, lower,upper)
     result = cv2.bitwise_and(img, img, mask=mask)
 
+    #The stacking output which is set on display2.
     mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
     hStack = np.hstack([img, mask, result])
     cv2.imshow('Horizontal Stacking', hStack)

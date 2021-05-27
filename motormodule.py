@@ -3,7 +3,7 @@ from time import sleep
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-#print("Now in motormodule")
+#Conneciting the GPIO pins to the motor driver pins.
 class Motor():
     def __init__(self,EnaA,In1A,In2A,EnaB,In1B,In2B):
         self.EnaA = EnaA
@@ -25,7 +25,7 @@ class Motor():
         self.mySpeed=0
         #print("Now at GPIO pins")
         
-        
+        #car speed , angle of taking takes place here.
     def move(self,speed=0.5,turn=0,t=0):
         speed *=100
         turn *=70
@@ -36,6 +36,7 @@ class Motor():
         if rightSpeed>100: rightSpeed=100
         elif rightSpeed<-100: rightSpeed= -100
 
+        #pwm pins responsible for speed
         self.pwmA.ChangeDutyCycle(abs(leftSpeed))
         self.pwmB.ChangeDutyCycle(abs(rightSpeed))
 
@@ -45,14 +46,14 @@ class Motor():
         if rightSpeed>0:GPIO.output(self.In1B,GPIO.HIGH);GPIO.output(self.In2B,GPIO.LOW)
         else:GPIO.output(self.In1B,GPIO.LOW);GPIO.output(self.In2B,GPIO.HIGH)
         sleep(t)
-        #print("Now Drive")
+        #Condition for the car to stop.
     def stop(self,t=0):
         self.pwmA.ChangeDutyCycle(0);
         self.pwmB.ChangeDutyCycle(0);
         self.mySpeed=0
         sleep(t)
     
-
+# condition of angle of taking
 def main():
     motor.move(0.5,0,2)
     motor.stop(2)
@@ -62,11 +63,11 @@ def main():
     motor.stop(2)
     motor.move(0,-0.5,2)
     motor.stop(2)
-#     print("Now in main function")
+
 if __name__ == '__main__':
+    #pin layout defined here.
     motor= Motor(33,32,36,35,38,40)
     main()
-    #print("Now in checking the Motor pin layout")
 
 
 
